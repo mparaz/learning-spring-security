@@ -15,6 +15,12 @@ public class LearningController {
         return new ResponseEntity<String>("arrived", HttpStatus.OK);
     }
 
+    @RequestMapping("/goCustom")
+    @Secured("ROLE_mockRoleCustom")
+    public ResponseEntity<String> goCustom() {
+        return new ResponseEntity<String>("arrived", HttpStatus.OK);
+    }
+
     // Protected by a role that is not assigned to a user.
     @RequestMapping("/goNot")
     @Secured("ROLE_mockRoleNot")
