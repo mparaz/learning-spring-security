@@ -15,15 +15,12 @@ public class LearningWebSecurity extends WebSecurityConfigurerAdapter {
         // This is required for the roles to take effect.
         http
                 .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic();
+                .anyRequest().authenticated();
 
-        http.jee().authenticatedUserDetailsService(new LearningAuthenticationUserDetailsService());
-    }
+        // Use JEE and map in the roles.
+        http.jee().mappableRoles("mockRole");
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("inmemory").password("inmemory").roles("mockRole");
+        // Subvert the Java EE-provided roles.
+//        http.jee().authenticatedUserDetailsService(new LearningAuthenticationUserDetailsService());
     }
 }

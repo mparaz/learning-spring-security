@@ -16,6 +16,8 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot' 
 apply plugin: 'io.spring.dependency-management' 
+apply plugin: 'war'
+
 
 jar {
     baseName = 'lss'
@@ -33,6 +35,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    // For WAR deployment, don't include Tomcat in the war file
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
 
     // For Spring Security testing
     testCompile('org.springframework.security:spring-security-test:4.0.2.RELEASE')
