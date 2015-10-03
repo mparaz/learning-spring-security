@@ -18,12 +18,11 @@ public class LearningWebSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
-
-        http.jee().authenticatedUserDetailsService(new LearningAuthenticationUserDetailsService());
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // The user name, password, and password can be given here as a starting point..
         auth.inMemoryAuthentication().withUser("inmemory").password("inmemory").roles("mockRole");
     }
 }
