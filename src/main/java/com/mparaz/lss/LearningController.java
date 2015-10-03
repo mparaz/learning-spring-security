@@ -28,10 +28,23 @@ public class LearningController {
         return new ResponseEntity<String>("arrived", HttpStatus.OK);
     }
 
-    // Not protected.
+    // Not protected, but authentication still required.
     @RequestMapping("/goYes")
     public ResponseEntity<String> goYes() {
         return new ResponseEntity<String>("arrived", HttpStatus.OK);
+    }
+
+    // Not protected and no authentication required
+    @RequestMapping("/goOpen")
+    public ResponseEntity<String> goOpen() {
+        return new ResponseEntity<String>("arrived", HttpStatus.OK);
+    }
+
+    // Protected and no authentication required - therefore will fail
+    @RequestMapping("/goClosed")
+    @Secured("ROLE_mockRoleCustom")
+    public ResponseEntity<String> goClosed() {
+        return new ResponseEntity<String>("not here", HttpStatus.OK);
     }
 
 }

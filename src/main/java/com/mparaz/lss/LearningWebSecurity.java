@@ -20,8 +20,10 @@ public class LearningWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // This is required for the roles to take effect.
+        // /goOpen and /goClosed will not require authentication.
         http
                 .authorizeRequests()
+                .antMatchers("/goOpen", "/goClosed").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
