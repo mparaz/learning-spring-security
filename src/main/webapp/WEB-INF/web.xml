@@ -7,8 +7,12 @@
         <auth-method>BASIC</auth-method>
     </login-config>
 
+    <!--
+        Declare the Java EE roles that will be used.
+        ROLE_ prefix is needed for matching.
+    -->
     <security-role>
-        <role-name>ALL</role-name>
+        <role-name>ROLE_javaeeRole</role-name>
     </security-role>
 
     <security-constraint>
@@ -17,7 +21,7 @@
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ALL</role-name>
+            <role-name>*</role-name>
         </auth-constraint>
     </security-constraint>
 </web-app>

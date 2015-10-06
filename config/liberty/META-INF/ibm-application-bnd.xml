@@ -6,4 +6,10 @@
 	  <!-- Matches all, to simply forward to Spring Security. -->
           <special-subject type="ALL_AUTHENTICATED_USERS" />
       </security-role>
+
+    <!-- Must match the WAS and web.xml roles -->
+    <security-role name="ROLE_javaeeRole">
+        <group name="javaeeGroup"/>
+    </security-role>
+
 </application-bnd>

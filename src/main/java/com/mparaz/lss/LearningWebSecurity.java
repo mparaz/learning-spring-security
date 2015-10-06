@@ -24,7 +24,11 @@ public class LearningWebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated();
 
-        // Subvert the Java EE-provided roles.
-        http.jee().authenticatedUserDetailsService(learningAuthenticationUserDetailsService);
+        // Use the Java EE role in Spring Security.
+        // Note, no ROLE_ prefix here
+        http.jee().mappableAuthorities("ROLE_javaeeRole");
+
+        // Alternative option
+//        http.jee().mappableRoles("javaeeRole");
     }
 }
