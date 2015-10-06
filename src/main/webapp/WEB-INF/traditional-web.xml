@@ -8,16 +8,16 @@
     </login-config>
 
     <security-role>
-        <role-name>ALL</role-name>
+        <role-name>ROLE_mockRole</role-name>
     </security-role>
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Everything must be secured for Spring Security to work</web-resource-name>
+            <web-resource-name>Secured Areas</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ALL</role-name>
+            <role-name>ROLE_mockRole</role-name>
         </auth-constraint>
     </security-constraint>
 </web-app>
