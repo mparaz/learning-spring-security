@@ -23,6 +23,7 @@ import java.security.Principal;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -69,8 +70,20 @@ public class LearnSpringSecurityApplicationTests {
         assertThat(response.getStatus(), is(403));
     }
 
+    // If the roles are prepopulated in Spring Security, then authenticatedUserDetailsService is not needed
+    // and so the REST server lookup is not performed
     @Test
-    public void shouldAccessUrlSecurelyWhenRoles() throws Exception {
+    public void shouldAccessUrlSecurelyWhenPrepopulatedRoles() throws Exception {
+        final MockHttpServletResponse response = mockMvc.perform(get("/go").with(user("jeeuser").roles("mockRole"))).
+                andReturn().getResponse();
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.getContentAsString(), is("arrived: jeeuser"));
+    }
+
+    // If the role is not prepopulated in Spring Security, then the authenticatedUserDetailsService is needed
+    // and so the REST server lookup is performed.
+    @Test
+    public void shouldAccessUrlSecurelyWhenLoadedRoles() throws Exception {
         // Mock server shall return the credentials
         // as expected by LearningAuthenticationUserDetailsService
         mockRestServiceServer.expect(MockRestRequestMatchers.requestTo("http://localhost:8080/r/jeeuser"))
@@ -85,9 +98,12 @@ public class LearnSpringSecurityApplicationTests {
             }
         };
 
-        final MockHttpServletResponse response1 = mockMvc.perform(get("/go").principal(principal)).andReturn().getResponse();
-        assertThat(response1.getStatus(), is(200));
-        assertThat(response1.getContentAsString(), is("arrived"));
+        final MockHttpServletResponse response = mockMvc.perform(get("/go").principal(principal)).andReturn().getResponse();
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.getContentAsString(), is("arrived: jeeuser"));
+
+        // Verify that the REST server call was done.
+        mockRestServiceServer.verify();
     }
 
     @Test
