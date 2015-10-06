@@ -30,10 +30,13 @@ repositories {
 
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
+    // For Spring Security, use 4.0.2.RELEASE instead of startar
+    compile('org.springframework.security:spring-security-web:4.0.2.RELEASE')
+    compile('org.springframework.security:spring-security-config:4.0.2.RELEASE')
+    
     // For Spring Security testing
     testCompile('org.springframework.security:spring-security-test:4.0.2.RELEASE')
 }
