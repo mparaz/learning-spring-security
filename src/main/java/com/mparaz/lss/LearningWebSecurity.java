@@ -24,9 +24,6 @@ public class LearningWebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated();
 
-        // Use JEE and map in the roles.
-//        http.jee().mappableRoles("mockRole");
-
         // Subvert the Java EE-provided roles.
         http.jee().authenticatedUserDetailsService(learningAuthenticationUserDetailsService);
     }

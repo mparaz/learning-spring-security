@@ -44,8 +44,8 @@ public class LearningAuthenticationUserDetailsService implements AuthenticationU
             // restTemplate could be null because...
             LOGGER.debug("loadUserDetails: restTemplate={}, this={}", restTemplate, this);
 
-            final ResponseEntity<String[]> rolesEntity = restTemplate.getForEntity("http://localhost:8080/r/{principal}",
-                    String[].class, principal);
+            final ResponseEntity<String[]> rolesEntity =
+                    restTemplate.getForEntity("http://localhost:8080/r/{principal}", String[].class, principal);
 
             final List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
             for (final String role: rolesEntity.getBody()) {
