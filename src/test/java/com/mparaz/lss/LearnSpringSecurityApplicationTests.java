@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,14 +48,8 @@ public class LearnSpringSecurityApplicationTests {
     }
 
     @Test
-    public void shouldAccessUrlSecurely() throws Exception {
-
-        // It passes two ways.
-
-        // 1. It interprets the header.
-        mockMvc.perform(get("/go").header("Authorization", "Basic aW5tZW1vcnk6aW5tZW1vcnk="));
-
-        // 2. It uses the principal.
+    public void shouldNotUsePrincipal() throws Exception {
+        // httpBasic doesn't use the Principal at all, so it is also HTTP 401.
         final Principal principal = new Principal() {
             @Override
             public String getName() {
@@ -62,6 +57,19 @@ public class LearnSpringSecurityApplicationTests {
             }
         };
 
-        mockMvc.perform(get("/go").principal(principal));
+        final MockHttpServletResponse response2 =
+                mockMvc.perform(get("/go").principal(principal)).andReturn().getResponse();
+        assertThat(response2.getStatus(), is(401));
+    }
+
+    @Test
+    public void shouldAccessUrlSecurely() throws Exception {
+        // httpBasic only passes if it's the header.
+        final MockHttpServletResponse response1 =
+                mockMvc.perform(get("/go").header("Authorization", "Basic aW5tZW1vcnk6aW5tZW1vcnk=")).
+                        andReturn().getResponse();
+
+        assertThat(response1.getStatus(), is(200));
+        assertThat(response1.getContentAsString(), is("arrived"));
     }
 }
