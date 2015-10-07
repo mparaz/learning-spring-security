@@ -70,6 +70,6 @@ public class LearnSpringSecurityApplicationTests {
                         andReturn().getResponse();
 
         assertThat(response1.getStatus(), is(200));
-        assertThat(response1.getContentAsString(), is("arrived"));
+        assertThat(response1.getContentAsString(), is("arrived: inmemory"));
     }
 }
